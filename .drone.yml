@@ -1,6 +1,6 @@
 pipeline:
   commit-stage:
-    image: docker.at.automotive.msg.team/msgoat/at41-drone-maven
+    image: docker.at.automotive.msg.team/cloudtrain/cnj-drone-mvn-k8s
     commands:
       - mvn clean deploy --batch-mode --fail-fast --errors -V -U -Dsurefire.useFile=false
   notification-stage:
