@@ -4,7 +4,7 @@
     <parent>
         <groupId>group.msg.at.cloud.tools</groupId>
         <artifactId>cnj-k8s-tools</artifactId>
-        <version>0.7.5</version>
+        <version>${revision}${sha1}${changelist}</version>
     </parent>
     <artifactId>helm-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
@@ -104,28 +104,6 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce-versions</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireMavenVersion>
-                                    <version>[3.5,)</version>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <version>${java.version}</version>
-                                </requireJavaVersion>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <artifactId>maven-plugin-plugin</artifactId>
                 <executions>

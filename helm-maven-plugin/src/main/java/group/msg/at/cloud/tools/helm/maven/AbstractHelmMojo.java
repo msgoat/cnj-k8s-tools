@@ -34,6 +34,9 @@ public abstract class AbstractHelmMojo extends AbstractMojo {
 	@Parameter(property = "helm.releaseName", readonly = true, required=false)
 	protected String helmReleaseName;
 
+	@Parameter(property = "helm.debug", defaultValue = "false", readonly = true, required=false)
+	protected boolean debug;
+
 	protected void info(String msg){
 		getLog().info(msg);
 	}

@@ -31,6 +31,9 @@ public final class InstallChartMojo extends AbstractHelmChartMojo {
 		install.setReleaseName(helmReleaseName);
 		install.setAtomic(true);
 		install.setWait(true);
+		if (this.debug) {
+			install.setDebug(true);
+		}
 		if (this.helmNamespace != null) {
 			install.setNamespace(this.helmNamespace);
 		} else {
