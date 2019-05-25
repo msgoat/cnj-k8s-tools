@@ -168,15 +168,10 @@ public final class InstallCommand extends AbstractChartCommand<InstallCommandRes
         @Override
         public void accept(String s) {
             if (s != null) {
-                if (s.startsWith("STATUS:") && s.contains("DEPLOYED")) {
+                if (s.startsWith("STATUS: DEPLOYED")) {
                     statusCode = CommandStatusCode.SUCCESS;
                     statusMessageParts.add(s);
-                } /* else if (s.startsWith("UPGRADE FAILED")) {
-                    statusCode = CommandStatusCode.FAILURE;
-                    statusMessageParts.add(s);
-                } else if (s.startsWith("ROLLING BACK")) {
-                    statusMessageParts.add(s);
-                } */ else if (s.startsWith("Error:")) {
+                } else if (s.startsWith("Error:")) {
                     statusCode = CommandStatusCode.FAILURE;
                     statusMessageParts.add(s);
                 }
