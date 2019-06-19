@@ -3,7 +3,9 @@ package group.msg.at.cloud.tools.helm.core.command;
 import group.msg.at.cloud.tools.helm.core.ExecutableRunner;
 import org.slf4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -13,6 +15,8 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
 
     private String namespace;
     private boolean force;
+    private boolean install;
+    private String releaseName;
 
     public UpgradeCommand() {
         super();
@@ -32,8 +36,6 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
-
-    private boolean install;
 
     /**
      * If a release by this name doesn't already exist, run an install.
@@ -56,8 +58,6 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
     public void setForce(boolean force) {
         this.force = force;
     }
-
-    private String releaseName;
 
     /**
      * Required release name of an already installed release
@@ -111,7 +111,7 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
         arguments.add("upgrade");
         collectCommandLineArguments(arguments);
         this.logger.info("running command: " + String.join(" ", arguments));
-        runner.run(getCurrentDirectory(), compositeConsumer, arguments.toArray(new String[arguments.size()]));
+        runner.run(getCurrentDirectory(), compositeConsumer, arguments.toArray(new String[0]));
         return parsingConsumer.parse();
     }
 

@@ -6,48 +6,51 @@ package group.msg.at.cloud.tools.helm.maven;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Common base implementation of all Mojos running Helm.
- * 
+ *
  * @author theism
  * @version 1.0
  * @since 15.02.2019
  */
 public abstract class AbstractHelmMojo extends AbstractMojo {
 
-	@Parameter(defaultValue = "${project.build.directory}", readonly = true, required=false)
-	protected File target;
+    @Parameter(defaultValue = "${project.build.directory}", readonly = true, required = false)
+    protected File target;
 
-	@Parameter(defaultValue="${project}",required=true, readonly=true)
-	protected MavenProject project;
+    @Parameter(defaultValue = "${project}", required = true, readonly = true)
+    protected MavenProject project;
 
-	@Parameter( defaultValue = "${session}", required = true, readonly = true )
-	protected MavenSession session;
+    @Parameter(defaultValue = "${session}", required = true, readonly = true)
+    protected MavenSession session;
 
-	@Parameter(property = "helm.releaseName", readonly = true, required=false)
-	protected String helmReleaseName;
+    @Parameter(property = "helm.releaseName", readonly = true, required = true)
+    protected String helmReleaseName;
 
-	@Parameter(property = "helm.debug", defaultValue = "false", readonly = true, required=false)
-	protected boolean debug;
+    @Parameter(property = "helm.tillerNamespace", readonly = true, required = true)
+    protected String helmTillerNamespace;
 
-	protected void info(String msg){
-		getLog().info(msg);
-	}
+    @Parameter(property = "helm.debug", defaultValue = "false", readonly = true, required = false)
+    protected boolean debug;
 
-	protected void warn(String msg) { getLog().warn(msg); }
+    protected void info(String msg) {
+        getLog().info(msg);
+    }
 
-	protected void error(String msg){
-		getLog().error(msg);
-	}
+    protected void warn(String msg) {
+        getLog().warn(msg);
+    }
 
-	protected void error(String msg,Throwable e){
-		getLog().error(msg,e);
-	}
+    protected void error(String msg) {
+        getLog().error(msg);
+    }
+
+    protected void error(String msg, Throwable e) {
+        getLog().error(msg, e);
+    }
 }

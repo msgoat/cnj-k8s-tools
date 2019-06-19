@@ -3,7 +3,9 @@ package group.msg.at.cloud.tools.helm.core.command;
 import group.msg.at.cloud.tools.helm.core.ExecutableRunner;
 import org.slf4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -149,7 +151,7 @@ public final class InstallCommand extends AbstractChartCommand<InstallCommandRes
         arguments.add("install");
         collectCommandLineArguments(arguments);
         this.logger.info("running command: " + String.join(" ", arguments));
-        runner.run(getCurrentDirectory(), compositeConsumer, arguments.toArray(new String[arguments.size()]));
+        runner.run(getCurrentDirectory(), compositeConsumer, arguments.toArray(new String[0]));
         return parsingConsumer.parse();
     }
 

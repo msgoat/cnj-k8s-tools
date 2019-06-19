@@ -1,5 +1,5 @@
 /*
- * at41-tools-kubectl-maven-plugin:InstallChartMojo.java
+ * at41-tools-kubectl-maven-plugin:InstallReleaseMojo.java
  * (c) Copyright msg systems ag Automotive Technology 2017
  */
 package group.msg.at.cloud.tools.helm.maven;
@@ -16,19 +16,22 @@ import org.apache.maven.plugins.annotations.Mojo;
 @Mojo(name = "delete", requiresProject = true)
 public final class DeleteReleaseMojo extends AbstractHelmMojo {
 
-	/**
-	 * @see org.apache.maven.plugin.Mojo#execute()
-	 */
-	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException {
-		DeleteCommand delete = new DeleteCommand(new Slf4jMavenLogAdapter(getLog()));
-		delete.setReleaseName(helmReleaseName);
-		delete.setPurge(true);
-		try {
-			DeleteCommandResult installResult = delete.call();
-		} catch (Exception ex) {
-			throw new MojoExecutionException(String.format("Failed to delete helm release %s", helmReleaseName), ex);
-		}
+    /**
+     * @see org.apache.maven.plugin.Mojo#execute()
+     */
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        DeleteCommand delete = new DeleteCommand(new Slf4jMavenLogAdapter(getLog()));
+        delete.setReleaseName(helmReleaseName);
+        delete.setPurge(true);
+        if (helmTillerNamespace != null) {
+            delete.setTillerNamespace(helmTillerNamespace);
+        }
+        try {
+            DeleteCommandResult installResult = delete.call();
+        } catch (Exception ex) {
+            throw new MojoExecutionException(String.format("Failed to delete helm release %s", helmReleaseName), ex);
+        }
 
-	}
+    }
 }

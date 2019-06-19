@@ -130,7 +130,7 @@ public abstract class AbstractCommand<V> implements Callable<V> {
     }
 
     public final void setTillerNamespace(String tillerNamespace) {
-        Objects.requireNonNull(currentDirectory, "tillerNamespace must not be null");
+        Objects.requireNonNull(tillerNamespace, "tillerNamespace must not be null");
         this.tillerNamespace = tillerNamespace;
     }
 

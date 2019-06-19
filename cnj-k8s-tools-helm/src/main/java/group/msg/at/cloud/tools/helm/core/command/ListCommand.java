@@ -29,7 +29,11 @@ public final class ListCommand extends AbstractCommand<ListCommandResult> {
         Consumer<String> loggingConsumer = s -> this.logger.info(s);
         ReleaseParser parsingConsumer = new ReleaseParser();
         Consumer<String> consumer = loggingConsumer.andThen(parsingConsumer);
-        runner.run(getCurrentDirectory(), consumer, "helm", "list" );
+        List<String> arguments = new ArrayList<>();
+        arguments.add("helm");
+        arguments.add("list");
+        collectCommandLineArguments(arguments);
+        runner.run(getCurrentDirectory(), consumer, arguments.toArray(new String[0]));
         return new ListCommandResult(parsingConsumer.getReleases());
     }
 

@@ -1,0 +1,56 @@
+replicaCount: 1
+
+component: "backend"
+stack: "helm-maven-plugin"
+project: "PIA"
+tier: "application"
+stage: "dev"
+
+image:
+  repository: reg-dhc.app.corpintra.net/pia/helm-maven-plugin-test
+  tag: latest
+  pullPolicy: Always
+
+probe:
+  liveness:
+    path: /api/v1/probes/liveness
+  readiness:
+    path: /api/v1/probes/readiness
+nameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    traefik.frontend.rule.type: PathPrefixStrip
+
+  path: "/helm-maven-plugin-test"
+  tls: []
+
+resources: {}
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+imagePullSecret: pia-robot-pull-secret
+
+securityContext:
+  fsGroup: 65534
+  runAsUser: 65534
+  runAsNonRoot: true

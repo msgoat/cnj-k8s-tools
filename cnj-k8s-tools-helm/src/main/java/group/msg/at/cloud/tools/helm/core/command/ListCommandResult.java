@@ -19,4 +19,15 @@ public final class ListCommandResult {
     public List<Release> getReleases() {
         return releases;
     }
+
+    public boolean containsRelease(String releaseName) {
+        boolean result = false;
+        for (Release current : this.releases) {
+            if (current.getName().equals(releaseName)) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
 }

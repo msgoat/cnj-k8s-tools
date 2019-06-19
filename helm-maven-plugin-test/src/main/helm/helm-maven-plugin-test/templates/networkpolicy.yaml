@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "helm-maven-plugin-test.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "helm-maven-plugin-test.name" . }}
+    helm.sh/chart: {{ include "helm-maven-plugin-test.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: {{.Values.component}}
+    app.kubernetes.io/part-of: {{.Values.stack }}
+    app.kubernetes.io/tier: {{.Values.tier }}
+    app.kubernetes.io/stage: {{.Values.stage }}
+    app.kubernetes.io/project: {{.Values.project }}
+  namespace: {{.Values.namespace}}
+spec:
+  ingress:
+  - ports:
+    - port: 8080
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "helm-maven-plugin-test.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}

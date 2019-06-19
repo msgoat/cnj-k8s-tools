@@ -8,6 +8,7 @@
 	<modules>
         <module>cnj-k8s-tools-helm</module>
 		<module>helm-maven-plugin</module>
+        <module>helm-maven-plugin-test</module>
     </modules>
     <properties>
         <!-- make sure everyone is using Java 8 -->
@@ -32,7 +33,7 @@
         <maven.war.plugin.version>3.2.2</maven.war.plugin.version>
         <maven.flatten.plugin.version>1.1.0</maven.flatten.plugin.version>
         <!-- new Maven version management -->
-        <revision>0.7.7</revision>
+        <revision>0.9.0</revision>
         <sha1></sha1>
         <changelist></changelist>
     </properties>

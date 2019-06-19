@@ -8,7 +8,7 @@ import java.io.File;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class InstallCommandTest {
+public class DeployCommandTest {
 
     private String currentReleaseName;
 
@@ -29,9 +29,9 @@ public class InstallCommandTest {
     }
 
     @Test
-    public void installCommandWorksOk() throws Exception {
-        final String RELEASE_NAME = "installnoprevrelease";
-        InstallCommand underTest = new InstallCommand();
+    public void deployCommandWithoutPreviousReleaseSucceeds() throws Exception {
+        final String RELEASE_NAME = "deploynoprevrelease";
+        DeployCommand underTest = new DeployCommand();
         underTest.setAtomic(true);
         underTest.setDescription("test release of chart testok");
         // underTest.setDryRun(true);
@@ -42,14 +42,14 @@ public class InstallCommandTest {
         underTest.setWait(true);
         underTest.setChartDirectory(new File("src/test/helm/testok"));
         underTest.setTillerNamespace(Constants.TILLER_NAMESPACE);
-        InstallCommandResult result = underTest.call();
+        DeployCommandResult result = underTest.call();
         assertNotNull("command must return non-null result", result);
         assertEquals("command status code must be SUCCESS", CommandStatusCode.SUCCESS, result.getStatusCode());
     }
 
     @Test
-    public void installWithExistingReleaseFails() throws Exception {
-        final String RELEASE_NAME = "installwithprevrelease";
+    public void deployCommandWithPreviousReleaseSucceeds() throws Exception {
+        final String RELEASE_NAME = "deploywithprevrelease";
         InstallCommand install = new InstallCommand();
         install.setAtomic(true);
         install.setDescription("test release of chart testok");
@@ -65,19 +65,18 @@ public class InstallCommandTest {
         assertNotNull("command must return non-null result", installResult);
         assertEquals("command status code must be SUCCESS", CommandStatusCode.SUCCESS, installResult.getStatusCode());
 
-        InstallCommand underTest = new InstallCommand();
+        DeployCommand underTest = new DeployCommand();
         underTest.setAtomic(true);
         underTest.setDescription("test release of chart testok");
         // underTest.setDryRun(true);
         underTest.setDebug(true);
         underTest.setNamespace("default");
-        currentReleaseName = RELEASE_NAME;
         underTest.setReleaseName(RELEASE_NAME);
         underTest.setWait(true);
         underTest.setChartDirectory(new File("src/test/helm/testok"));
         underTest.setTillerNamespace(Constants.TILLER_NAMESPACE);
-        InstallCommandResult result = underTest.call();
+        DeployCommandResult result = underTest.call();
         assertNotNull("command must return non-null result", result);
-        assertEquals("command status code must be SUCCESS", CommandStatusCode.FAILURE, result.getStatusCode());
+        assertEquals("command status code must be SUCCESS", CommandStatusCode.SUCCESS, result.getStatusCode());
     }
 }

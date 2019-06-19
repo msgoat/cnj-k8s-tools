@@ -3,7 +3,9 @@ package group.msg.at.cloud.tools.helm.core.command;
 import group.msg.at.cloud.tools.helm.core.ExecutableRunner;
 import org.slf4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -122,7 +124,7 @@ public final class DeleteCommand extends AbstractCommand<DeleteCommandResult> {
         arguments.add("delete");
         collectCommandLineArguments(arguments);
         this.logger.info("running command: " + String.join(" ", arguments));
-        runner.run(getCurrentDirectory(), consumer, arguments.toArray(new String[arguments.size()]));
+        runner.run(getCurrentDirectory(), consumer, arguments.toArray(new String[0]));
         return new DeleteCommandResult();
     }
 }
