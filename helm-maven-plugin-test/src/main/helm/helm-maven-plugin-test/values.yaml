@@ -2,12 +2,12 @@ replicaCount: 1
 
 component: "backend"
 stack: "helm-maven-plugin"
-project: "PIA"
+project: "AT41"
 tier: "application"
 stage: "dev"
 
 image:
-  repository: reg-dhc.app.corpintra.net/pia/helm-maven-plugin-test
+  repository: docker.at.automotive.msg.team/cloudtrain/helm-maven-plugin-test
   tag: latest
   pullPolicy: Always
 
