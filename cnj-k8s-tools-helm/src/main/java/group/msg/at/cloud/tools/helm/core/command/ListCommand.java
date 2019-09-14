@@ -59,10 +59,12 @@ public final class ListCommand extends AbstractCommand<ListCommandResult> {
 
         private Release parse(String s) {
             Release result = null;
-            int nextBlankPos = s.indexOf(" ");
-            if (nextBlankPos > 0) {
-                String releaseName = s.substring(0, nextBlankPos);
-                result = new Release(releaseName);
+            int nextTabPos = s.indexOf("\t");
+            if (nextTabPos > 0) {
+                String releaseName = s.substring(0, nextTabPos).trim();
+                if (!releaseName.isEmpty()) {
+                    result = new Release(releaseName);
+                }
             }
             return result;
         }

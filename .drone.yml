@@ -3,11 +3,5 @@ pipeline:
     image: docker.at.automotive.msg.team/cloudtrain/cnj-drone-mvn-k8s
     commands:
       - mvn clean deploy --batch-mode --fail-fast --errors -V -U -Dsurefire.useFile=false -DskipTests=true
-  notification-stage:
-    image: plugins/slack
-    webhook: https://hooks.slack.com/services/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
-    channel: drone
-    when:
-      status: [ success, failure ]
 
     
