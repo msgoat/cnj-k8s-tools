@@ -32,6 +32,7 @@ public final class ListCommand extends AbstractCommand<ListCommandResult> {
         List<String> arguments = new ArrayList<>();
         arguments.add("helm");
         arguments.add("list");
+        arguments.add("--short");
         collectCommandLineArguments(arguments);
         runner.run(getCurrentDirectory(), consumer, arguments.toArray(new String[0]));
         return new ListCommandResult(parsingConsumer.getReleases());
@@ -58,14 +59,7 @@ public final class ListCommand extends AbstractCommand<ListCommandResult> {
         }
 
         private Release parse(String s) {
-            Release result = null;
-            int nextTabPos = s.indexOf("\t");
-            if (nextTabPos > 0) {
-                String releaseName = s.substring(0, nextTabPos).trim();
-                if (!releaseName.isEmpty()) {
-                    result = new Release(releaseName);
-                }
-            }
+            Release result = new Release(s);
             return result;
         }
     }
