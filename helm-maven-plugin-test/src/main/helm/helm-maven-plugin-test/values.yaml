@@ -47,10 +47,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-imagePullSecret: pia-robot-pull-secret
-
-securityContext:
-  fsGroup: 65534
-  runAsUser: 65534
-  runAsNonRoot: true
