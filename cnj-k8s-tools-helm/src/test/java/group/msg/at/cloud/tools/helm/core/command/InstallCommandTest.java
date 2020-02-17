@@ -15,10 +15,9 @@ public class InstallCommandTest {
     @After
     public void onAfter() {
         if (currentReleaseName != null) {
-            DeleteCommand delete = new DeleteCommand();
-            delete.setPurge(true);
+            UninstallCommand delete = new UninstallCommand();
             delete.setReleaseName(currentReleaseName);
-            delete.setTillerNamespace(Constants.TILLER_NAMESPACE);
+            delete.setNamespace(Constants.RELEASE_NAMESPACE);
             try {
                 delete.call();
             } catch (Exception ex) {
@@ -33,15 +32,13 @@ public class InstallCommandTest {
         final String RELEASE_NAME = "installnoprevrelease";
         InstallCommand underTest = new InstallCommand();
         underTest.setAtomic(true);
-        underTest.setDescription("test release of chart testok");
-        // underTest.setDryRun(true);
         underTest.setDebug(true);
         underTest.setNamespace("default");
         currentReleaseName = RELEASE_NAME;
         underTest.setReleaseName(RELEASE_NAME);
         underTest.setWait(true);
         underTest.setChartDirectory(new File("src/test/helm/testok"));
-        underTest.setTillerNamespace(Constants.TILLER_NAMESPACE);
+        underTest.setNamespace(Constants.RELEASE_NAMESPACE);
         InstallCommandResult result = underTest.call();
         assertNotNull("command must return non-null result", result);
         assertEquals("command status code must be SUCCESS", CommandStatusCode.SUCCESS, result.getStatusCode());
@@ -52,30 +49,26 @@ public class InstallCommandTest {
         final String RELEASE_NAME = "installwithprevrelease";
         InstallCommand install = new InstallCommand();
         install.setAtomic(true);
-        install.setDescription("test release of chart testok");
-        // underTest.setDryRun(true);
         install.setDebug(true);
         install.setNamespace("default");
         currentReleaseName = RELEASE_NAME;
         install.setReleaseName(RELEASE_NAME);
         install.setWait(true);
         install.setChartDirectory(new File("src/test/helm/testok"));
-        install.setTillerNamespace(Constants.TILLER_NAMESPACE);
+        install.setNamespace(Constants.RELEASE_NAMESPACE);
         InstallCommandResult installResult = install.call();
         assertNotNull("command must return non-null result", installResult);
         assertEquals("command status code must be SUCCESS", CommandStatusCode.SUCCESS, installResult.getStatusCode());
 
         InstallCommand underTest = new InstallCommand();
         underTest.setAtomic(true);
-        underTest.setDescription("test release of chart testok");
-        // underTest.setDryRun(true);
         underTest.setDebug(true);
         underTest.setNamespace("default");
         currentReleaseName = RELEASE_NAME;
         underTest.setReleaseName(RELEASE_NAME);
         underTest.setWait(true);
         underTest.setChartDirectory(new File("src/test/helm/testok"));
-        underTest.setTillerNamespace(Constants.TILLER_NAMESPACE);
+        underTest.setNamespace(Constants.RELEASE_NAMESPACE);
         InstallCommandResult result = underTest.call();
         assertNotNull("command must return non-null result", result);
         assertEquals("command status code must be SUCCESS", CommandStatusCode.FAILURE, result.getStatusCode());

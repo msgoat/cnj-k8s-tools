@@ -15,10 +15,9 @@ public class UpgradeCommandTest {
     @After
     public void onAfter() {
         if (currentReleaseName != null) {
-            DeleteCommand delete = new DeleteCommand();
-            delete.setPurge(true);
+            UninstallCommand delete = new UninstallCommand();
             delete.setReleaseName(currentReleaseName);
-            delete.setTillerNamespace(Constants.TILLER_NAMESPACE);
+            delete.setNamespace(Constants.RELEASE_NAMESPACE);
             try {
                 delete.call();
             } catch (Exception ex) {
@@ -33,25 +32,21 @@ public class UpgradeCommandTest {
         final String RELEASE_NAME = "upgradewithprevrelease";
         InstallCommand preTestInstall = new InstallCommand();
         preTestInstall.setAtomic(true);
-        preTestInstall.setDescription("test release of chart testok");
-        // preTestInstall.setDebug(true);
         preTestInstall.setNamespace("default");
         currentReleaseName = RELEASE_NAME;
         preTestInstall.setReleaseName(RELEASE_NAME);
         preTestInstall.setWait(true);
         preTestInstall.setChartDirectory(new File("src/test/helm/testok"));
-        preTestInstall.setTillerNamespace(Constants.TILLER_NAMESPACE);
+        preTestInstall.setNamespace(Constants.RELEASE_NAMESPACE);
         InstallCommandResult preTestInstallResult = preTestInstall.call();
 
         UpgradeCommand underTest = new UpgradeCommand();
         underTest.setAtomic(true);
-        underTest.setDescription("updated test release of chart testok");
-        //underTest.setDebug(true);
         underTest.setNamespace("default");
         underTest.setReleaseName(RELEASE_NAME);
         underTest.setWait(true);
         underTest.setChartDirectory(new File("src/test/helm/testok"));
-        underTest.setTillerNamespace(Constants.TILLER_NAMESPACE);
+        underTest.setNamespace(Constants.RELEASE_NAMESPACE);
         UpgradeCommandResult result = underTest.call();
         assertNotNull("command must return non-null result", result);
         assertEquals("command status code must be SUCCESS", CommandStatusCode.SUCCESS, result.getStatusCode());
@@ -62,13 +57,12 @@ public class UpgradeCommandTest {
         final String RELEASE_NAME = "upgradenoprevrelease";
         UpgradeCommand underTest = new UpgradeCommand();
         underTest.setAtomic(true);
-        underTest.setDescription("updated test release of chart testok");
         underTest.setNamespace("default");
         currentReleaseName = RELEASE_NAME;
         underTest.setReleaseName(RELEASE_NAME);
         underTest.setWait(true);
         underTest.setChartDirectory(new File("src/test/helm/testok"));
-        underTest.setTillerNamespace(Constants.TILLER_NAMESPACE);
+        underTest.setNamespace(Constants.RELEASE_NAMESPACE);
         UpgradeCommandResult result = underTest.call();
         assertNotNull("command must return non-null result", result);
         assertEquals("command status code must be FAILURE", CommandStatusCode.FAILURE, result.getStatusCode());

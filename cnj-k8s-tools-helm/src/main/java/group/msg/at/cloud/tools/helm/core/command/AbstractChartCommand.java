@@ -16,7 +16,6 @@ public abstract class AbstractChartCommand<V> extends AbstractCommand<V> {
     private File chartDirectory;
     private boolean atomic;
     private boolean depUp;
-    private String description;
     private boolean devel;
     private boolean dryRun;
     private boolean noHooks;
@@ -25,7 +24,7 @@ public abstract class AbstractChartCommand<V> extends AbstractCommand<V> {
     private String chartRepoPassword;
     private boolean renderSubChartNotes;
     private Map<String, Object> values = new LinkedHashMap<>();
-    private int timeout;
+    private String timeout;
     private boolean wait;
     private boolean verify;
     private String chartVersion;
@@ -84,17 +83,6 @@ public abstract class AbstractChartCommand<V> extends AbstractCommand<V> {
 
     public void setDepUp(boolean depUp) {
         this.depUp = depUp;
-    }
-
-    /**
-     * Optional description of this release.
-     */
-    public Optional<String> getDescription() {
-        return Optional.ofNullable(this.description);
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     /**
@@ -186,14 +174,14 @@ public abstract class AbstractChartCommand<V> extends AbstractCommand<V> {
     /**
      * Optional duration in seconds helm will wait for any individual Kubernetes operation (like Jobs for hooks) (default: 300)
      */
-    public final Optional<Integer> getTimeout() {
-        return timeout != 0 ? Optional.of(this.timeout) : Optional.empty();
+    public final Optional<String> getTimeout() {
+        return Optional.ofNullable(this.timeout);
     }
 
     /**
-     * Sets the duration in seconds Helm will wait to establish a connection to tiller.
+     * Sets the duration Helm will wait on atomic operations to finish.
      */
-    public final void setTimeout(int timeout) {
+    public final void setTimeout(String timeout) {
         this.timeout = timeout;
     }
 
@@ -240,10 +228,6 @@ public abstract class AbstractChartCommand<V> extends AbstractCommand<V> {
         if (isDepUp()) {
             arguments.add("--dep-up");
         }
-        getDescription().ifPresent(description -> {
-            arguments.add("--description");
-            arguments.add("\"" + description + "\"");
-        });
         if (isDevel()) {
             arguments.add("--devel");
         }
@@ -270,7 +254,7 @@ public abstract class AbstractChartCommand<V> extends AbstractCommand<V> {
         }
         getTimeout().ifPresent(timeout -> {
             arguments.add("--timeout");
-            arguments.add(Integer.toString(timeout));
+            arguments.add(timeout);
         });
         if (isWait()) {
             arguments.add("--wait");

@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -13,9 +12,9 @@ import java.util.function.Consumer;
  */
 public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandResult> {
 
-    private String namespace;
     private boolean force;
     private boolean install;
+    private boolean cleanupOnFail;
     private String releaseName;
 
     public UpgradeCommand() {
@@ -24,17 +23,6 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
 
     public UpgradeCommand(Logger logger) {
         super(logger);
-    }
-
-    /**
-     * Optional namespace to install to (default: current kubeconfig namespace).
-     */
-    public Optional<String> getNamespace() {
-        return Optional.ofNullable(this.namespace);
-    }
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
     }
 
     /**
@@ -57,6 +45,17 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
 
     public void setForce(boolean force) {
         this.force = force;
+    }
+
+    /**
+     * If set, allow deletion of new resources created in this upgrade when upgrade fails.
+     */
+    public boolean isCleanupOnFail() {
+        return cleanupOnFail;
+    }
+
+    public void setCleanupOnFail(boolean cleanupOnFail) {
+        this.cleanupOnFail = cleanupOnFail;
     }
 
     /**
@@ -94,10 +93,9 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
         if (isInstall()) {
             arguments.add("--install");
         }
-        getNamespace().ifPresent(namespace -> {
-            arguments.add("--namespace");
-            arguments.add(namespace);
-        });
+        if (isCleanupOnFail()) {
+            arguments.add("--cleanup-on-fail");
+        }
     }
 
     @Override
@@ -133,12 +131,17 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
                 if (s.startsWith("Release") && s.contains("has been upgraded")) {
                     statusCode = CommandStatusCode.SUCCESS;
                     statusMessageParts.add(s);
-                } else if (s.startsWith("UPGRADE FAILED")) {
+                } else if (s.startsWith("STATUS: deployed")) {
+                    statusCode = CommandStatusCode.SUCCESS;
+                    statusMessageParts.add(s);
+                } else if (s.contains("UPGRADE FAILED")) {
                     statusCode = CommandStatusCode.FAILURE;
                     statusMessageParts.add(s);
                 } else if (s.startsWith("ROLLING BACK")) {
+                    statusCode = CommandStatusCode.FAILURE;
                     statusMessageParts.add(s);
                 } else if (s.startsWith("Error:")) {
+                    statusCode = CommandStatusCode.FAILURE;
                     statusMessageParts.add(s);
                 }
             }

@@ -15,7 +15,6 @@ public final class InstallCommand extends AbstractChartCommand<InstallCommandRes
 
     private String releaseName;
     private String releaseNameTemplate;
-    private String namespace;
     private boolean noCrdHook;
     private boolean replace;
     /*
@@ -69,17 +68,6 @@ public final class InstallCommand extends AbstractChartCommand<InstallCommandRes
     }
 
     /**
-     * Optional namespace to install to (default: current kubeconfig namespace).
-     */
-    public Optional<String> getNamespace() {
-        return Optional.ofNullable(this.namespace);
-    }
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    /**
      * If set, prevent CRD hooks from running, but run other hooks.
      */
     public boolean isNoCrdHook() {
@@ -118,19 +106,14 @@ public final class InstallCommand extends AbstractChartCommand<InstallCommandRes
     }
 
     protected void collectCommandLineArguments(List<String> arguments) {
-        arguments.add(getChartDirectory().getAbsolutePath());
-        super.collectCommandLineArguments(arguments);
         getReleaseName().ifPresent(name -> {
-            arguments.add("--name");
             arguments.add(name);
         });
+        arguments.add(getChartDirectory().getAbsolutePath());
+        super.collectCommandLineArguments(arguments);
         getReleaseNameTemplate().ifPresent(template -> {
             arguments.add("--name-template");
             arguments.add(template);
-        });
-        getNamespace().ifPresent(namespace -> {
-            arguments.add("--namespace");
-            arguments.add(namespace);
         });
         if (isNoCrdHook()) {
             arguments.add("--no-crd-hook");
@@ -170,7 +153,7 @@ public final class InstallCommand extends AbstractChartCommand<InstallCommandRes
         @Override
         public void accept(String s) {
             if (s != null) {
-                if (s.startsWith("STATUS: DEPLOYED")) {
+                if (s.startsWith("STATUS: deployed")) {
                     statusCode = CommandStatusCode.SUCCESS;
                     statusMessageParts.add(s);
                 } else if (s.startsWith("Error:")) {

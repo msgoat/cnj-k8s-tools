@@ -1,8 +1,4 @@
-/*
- * at41-tools-kubectl-maven-plugin:AbstractHelmMojo.java
- * (c) Copyright msg systems ag Automotive Technology 2019
- */
-package group.msg.at.cloud.tools.helm.maven;
+package group.msg.at.cloud.tools.helm;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
@@ -28,12 +24,6 @@ public abstract class AbstractHelmMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${session}", required = true, readonly = true)
     protected MavenSession session;
-
-    @Parameter(property = "helm.releaseName", readonly = true, required = true)
-    protected String helmReleaseName;
-
-    @Parameter(property = "helm.tillerNamespace", readonly = true, required = true)
-    protected String helmTillerNamespace;
 
     @Parameter(property = "helm.debug", defaultValue = "false", readonly = true, required = false)
     protected boolean debug;

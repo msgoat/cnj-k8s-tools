@@ -1,4 +1,4 @@
-package group.msg.at.cloud.tools.helm.maven;
+package group.msg.at.cloud.tools.helm;
 
 import org.apache.maven.plugin.logging.Log;
 import org.slf4j.Logger;

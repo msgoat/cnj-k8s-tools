@@ -13,6 +13,7 @@ import java.util.concurrent.Callable;
 
 /**
  * Abstract base class for all helm command classes that encapsulates some common behaviour.
+ *
  * @param <V> concrete helm command subclass
  */
 public abstract class AbstractCommand<V> implements Callable<V> {
@@ -24,8 +25,7 @@ public abstract class AbstractCommand<V> implements Callable<V> {
     private String host;
     private String kubeContext;
     private File kubeConfig;
-    private int tillerConnectionTimeout;
-    private String tillerNamespace;
+    private String namespace;
     private File currentDirectory;
 
     public AbstractCommand() {
@@ -96,19 +96,6 @@ public abstract class AbstractCommand<V> implements Callable<V> {
         this.kubeConfig = kubeConfig;
     }
 
-    public final Optional<Integer> getTillerConnectionTimeout() {
-        return tillerConnectionTimeout != 0 ? Optional.of(this.tillerConnectionTimeout) : Optional.empty();
-    }
-
-    /**
-     * Sets the duration in seconds Helm will wait to establish a connection to tiller.
-     *
-     * @param timeout
-     */
-    public final void setTillerConnectionTimeout(int timeout) {
-        this.tillerConnectionTimeout = timeout;
-    }
-
     public final File getCurrentDirectory() {
         if (this.currentDirectory == null) {
             try {
@@ -125,13 +112,13 @@ public abstract class AbstractCommand<V> implements Callable<V> {
         this.currentDirectory = currentDirectory;
     }
 
-    public final Optional<String> getTillerNamespace() {
-        return Optional.ofNullable(this.tillerNamespace);
+    public final Optional<String> getNamespace() {
+        return Optional.ofNullable(this.namespace);
     }
 
-    public final void setTillerNamespace(String tillerNamespace) {
-        Objects.requireNonNull(tillerNamespace, "tillerNamespace must not be null");
-        this.tillerNamespace = tillerNamespace;
+    public final void setNamespace(String namespace) {
+        Objects.requireNonNull(namespace, "tillerNamespace must not be null");
+        this.namespace = namespace;
     }
 
     @Override
@@ -161,12 +148,8 @@ public abstract class AbstractCommand<V> implements Callable<V> {
             arguments.add("--kubeconfig");
             arguments.add(config.getAbsolutePath());
         });
-        getTillerConnectionTimeout().ifPresent(timeout -> {
-            arguments.add("--tiller-connection-timeout");
-            arguments.add(Integer.toString(timeout));
-        });
-        getTillerNamespace().ifPresent(namespace -> {
-            arguments.add("--tiller-namespace");
+        getNamespace().ifPresent(namespace -> {
+            arguments.add("--namespace");
             arguments.add(namespace);
         });
     }

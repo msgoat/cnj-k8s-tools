@@ -11,7 +11,7 @@ public class ListCommandTest {
     @Test
     public void listCommandWorksOk() throws Exception {
         ListCommand underTest = new ListCommand();
-        underTest.setTillerNamespace(Constants.TILLER_NAMESPACE);
+        underTest.setNamespace(Constants.RELEASE_NAMESPACE);
         ListCommandResult result = underTest.call();
         assertNotNull("command must return non-null result", result);
         assertNotNull("command must return list of releases", result.getReleases());

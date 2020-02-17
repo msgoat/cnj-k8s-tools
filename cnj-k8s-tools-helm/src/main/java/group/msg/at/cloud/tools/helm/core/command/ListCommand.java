@@ -33,6 +33,12 @@ public final class ListCommand extends AbstractCommand<ListCommandResult> {
         arguments.add("helm");
         arguments.add("list");
         arguments.add("--short");
+        if (getNamespace().isPresent()) {
+            arguments.add("--namespace");
+            arguments.add(getNamespace().get());
+        } else {
+            arguments.add("--all-namespaces");
+        }
         collectCommandLineArguments(arguments);
         runner.run(getCurrentDirectory(), consumer, arguments.toArray(new String[0]));
         return new ListCommandResult(parsingConsumer.getReleases());
