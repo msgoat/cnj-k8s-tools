@@ -375,9 +375,9 @@
                             <goal>deploy</goal>
                         </goals>
                         <configuration>
-                            <helmTillerNamespace>sys-tiller</helmTillerNamespace>
-                            <helmChartDirectory>src/main/helm/${project.artifactId}</helmChartDirectory>
-                            <helmReleaseName>${project.artifactId}</helmReleaseName>
+                            <namespace>int</namespace>
+                            <chartDirectory>src/main/helm/${project.artifactId}</chartDirectory>
+                            <releaseName>${project.artifactId}</releaseName>
                             <debug>true</debug>
                         </configuration>
                     </execution>
