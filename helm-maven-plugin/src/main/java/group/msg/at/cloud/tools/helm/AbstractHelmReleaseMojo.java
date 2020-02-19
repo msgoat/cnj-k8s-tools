@@ -2,7 +2,7 @@ package group.msg.at.cloud.tools.helm;
 
 import org.apache.maven.plugins.annotations.Parameter;
 
-public abstract class AbstractHelmReleaseMojo extends AbstractHelmChartMojo {
+public abstract class AbstractHelmReleaseMojo extends AbstractHelmMojo {
 
     @Parameter(property = "helm.releaseName", readonly = true, required = true)
     protected String releaseName;

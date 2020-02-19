@@ -8,11 +8,16 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import java.io.File;
+
 /**
  * {@code Mojo} that installs the specified chart.
  */
 @Mojo(name = "deploy", requiresProject = true)
 public final class DeployReleaseMojo extends AbstractHelmReleaseMojo {
+
+    @Parameter(property = "helm.chartDirectory", required = true, readonly = true)
+    protected File chartDirectory;
 
     @Parameter(property = "helm.force", required = false, readonly = true, defaultValue = "false")
     protected boolean force;

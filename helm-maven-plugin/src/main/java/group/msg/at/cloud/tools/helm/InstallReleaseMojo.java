@@ -6,12 +6,18 @@ import group.msg.at.cloud.tools.helm.core.command.InstallCommandResult;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+
+import java.io.File;
 
 /**
  * {@code Mojo} that installs the specified chart.
  */
 @Mojo(name = "install", requiresProject = true)
 public final class InstallReleaseMojo extends AbstractHelmReleaseMojo {
+
+    @Parameter(property = "helm.chartDirectory", required = true, readonly = true)
+    protected File chartDirectory;
 
     /**
      * @see org.apache.maven.plugin.Mojo#execute()
