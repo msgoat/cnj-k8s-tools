@@ -8,7 +8,7 @@
 	<modules>
         <module>cnj-k8s-tools-helm</module>
 		<module>helm-maven-plugin</module>
-        <module>helm-maven-plugin-test</module>
+        <!-- <module>helm-maven-plugin-test</module> -->
     </modules>
     <properties>
         <!-- make sure everyone is using Java 8 -->
@@ -205,7 +205,7 @@
         <repository>
             <id>at41-maven-repository</id>
             <name>msg Automotive AT Maven Releases Repository</name>
-            <url>https://nexus.at.automotive.msg.team/repository/msgoat-maven-releases/</url>
+            <url>https://nexus.at41tools.k8s.aws.msgoat.eu/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 </project>

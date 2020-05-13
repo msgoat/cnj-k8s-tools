@@ -3,7 +3,7 @@
 Set of tools to integrate Kubernetes tools into Maven builds.
 
 ## Status
-![Build status](https://drone.at.automotive.msg.team/api/badges/cloudtrain/cnj-k8s-tools/status.svg)
+![Build status](https://drone.at41tools.k8s.aws.msgoat.eu/api/badges/msgoat/cnj-k8s-tools/status.svg)
 
 ## Release information
 

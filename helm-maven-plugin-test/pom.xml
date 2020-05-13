@@ -19,7 +19,7 @@
         <payara.version>5.192</payara.version>
         <microprofile.version>2.1</microprofile.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <docker.registry.name>docker.at.automotive.msg.team</docker.registry.name>
+        <docker.registry.name>docker.at41tools.k8s.aws.msgoat.eu</docker.registry.name>
         <docker.organization.name>cloudtrain</docker.organization.name>
         <docker.image.name>${docker.registry.name}/${docker.organization.name}/${project.artifactId}</docker.image.name>
         <docker.removeMode>all</docker.removeMode>
