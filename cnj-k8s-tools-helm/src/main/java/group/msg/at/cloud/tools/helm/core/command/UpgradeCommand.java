@@ -4,8 +4,11 @@ import group.msg.at.cloud.tools.helm.core.ExecutableRunner;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Represents the {@code helm upgrade} command which update the specified release with the specified chart.
@@ -16,6 +19,9 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
     private boolean install;
     private boolean cleanupOnFail;
     private String releaseName;
+    private boolean resetValues;
+    private boolean reuseValues;
+    private Map<String, String> values = new LinkedHashMap<>();
 
     public UpgradeCommand() {
         super();
@@ -69,6 +75,38 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
         this.releaseName = releaseName;
     }
 
+    /**
+     * When upgrading, reset the values to the ones built into the chart.
+     */
+    public boolean isResetValues() {
+        return resetValues;
+    }
+
+    public void setResetValues(boolean resetValues) {
+        this.resetValues = resetValues;
+    }
+
+    /**
+     * When upgrading, reuse the last release's values and merge in any overrides from the command line via --set and -f.
+     * <p>
+     * If {@link #resetValues} is specified, this is ignored.
+     * </p>
+     */
+    public boolean isReuseValues() {
+        return reuseValues;
+    }
+
+    public void setReuseValues(boolean reuseValues) {
+        this.reuseValues = reuseValues;
+    }
+
+    public Map<String, String> getValues() {
+        return values;
+    }
+
+    public void setValues(Map<String, String> values) {
+        this.values = values;
+    }
 
     protected void collectCommandLineValues(List<String> arguments) {
 /*
@@ -96,6 +134,16 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
         if (isCleanupOnFail()) {
             arguments.add("--cleanup-on-fail");
         }
+        if (isResetValues()) {
+            arguments.add("--reset-values");
+        }
+        if (isReuseValues()) {
+            arguments.add("--reuse-values");
+        }
+        if (!values.isEmpty()) {
+            arguments.add("--set");
+            arguments.add(String.join(",", values.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).collect(Collectors.toList())));
+        }
     }
 
     @Override
@@ -107,8 +155,9 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
         List<String> arguments = new ArrayList<>();
         arguments.add("helm");
         arguments.add("upgrade");
-        collectCommandLineArguments(arguments);
+        // TODO: put after collectCommandLineArguments when filter of set argument is implemented
         this.logger.info("running command: " + String.join(" ", arguments));
+        collectCommandLineArguments(arguments);
         runner.run(getCurrentDirectory(), compositeConsumer, arguments.toArray(new String[0]));
         return parsingConsumer.parse();
     }

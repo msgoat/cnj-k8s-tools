@@ -9,6 +9,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * {@code Mojo} that installs the specified chart.
@@ -24,6 +26,15 @@ public final class DeployReleaseMojo extends AbstractHelmReleaseMojo {
 
     @Parameter(property = "helm.cleanupOnFail", required = false, readonly = true, defaultValue = "true")
     protected boolean cleanupOnFail;
+
+    @Parameter(property = "helm.resetValues", required = false, defaultValue = "false")
+    protected boolean resetValues;
+
+    @Parameter(property = "helm.reuseValues", required = false, defaultValue = "false")
+    protected boolean reuseValues;
+
+    @Parameter(property = "helm.values", required = false)
+    protected Map<String,String> values = new LinkedHashMap<>();
 
     /**
      * @see org.apache.maven.plugin.Mojo#execute()
@@ -49,6 +60,9 @@ public final class DeployReleaseMojo extends AbstractHelmReleaseMojo {
         if (this.timeout != null) {
             upgrade.setTimeout(this.timeout);
         }
+        upgrade.setResetValues(this.resetValues);
+        upgrade.setReuseValues(this.reuseValues);
+        upgrade.setValues(this.values);
         UpgradeCommandResult result = null;
         try {
             result = upgrade.call();

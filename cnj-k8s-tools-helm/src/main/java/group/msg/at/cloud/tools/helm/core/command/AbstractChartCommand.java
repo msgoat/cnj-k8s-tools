@@ -23,7 +23,6 @@ public abstract class AbstractChartCommand<V> extends AbstractCommand<V> {
     private String chartRepoUser;
     private String chartRepoPassword;
     private boolean renderSubChartNotes;
-    private Map<String, Object> values = new LinkedHashMap<>();
     private String timeout;
     private boolean wait;
     private boolean verify;
@@ -160,15 +159,6 @@ public abstract class AbstractChartCommand<V> extends AbstractCommand<V> {
 
     public void setRenderSubChartNotes(boolean renderSubChartNotes) {
         this.renderSubChartNotes = renderSubChartNotes;
-    }
-
-    public void addValue(String key, Object value) {
-        Objects.requireNonNull(key, "key must not be null");
-        values.put(key, value);
-    }
-
-    public Map<String, Object> getValues() {
-        return values;
     }
 
     /**

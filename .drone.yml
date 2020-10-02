@@ -1,7 +1,7 @@
 ---
 kind: pipeline
 type: kubernetes
-name: cnj-docker-tools-build
+name: cnj-k8s-tools-build
 
 steps:
   - name: commit-stage
