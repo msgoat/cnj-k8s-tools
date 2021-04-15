@@ -1,4 +1,4 @@
-FROM docker.at41tools.k8s.aws.msgoat.eu/msgoat/at41-docker-jre11:1.0.0
+FROM docker.cloudtrain.aws.msgoat.eu/msgoat/at41-docker-jre11:2.0.1
 
 LABEL maintainer="michael.theis@msg.group" \
         ${project.groupId}.${project.artifactId}.project="AT41" \

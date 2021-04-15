@@ -7,7 +7,7 @@ tier: "application"
 stage: "dev"
 
 image:
-  repository: docker.at41tools.k8s.aws.msgoat.eu/cloudtrain/helm-maven-plugin-test
+  repository: docker.cloudtrain.aws.msgoat.eu/cloudtrain/helm-maven-plugin-test
   tag: latest
   pullPolicy: Always
 
