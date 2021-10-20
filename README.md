@@ -7,6 +7,4 @@ Set of tools to integrate Kubernetes tools into Maven builds.
 
 ## Release information
 
-Latest version is: `3.0.0`.
-
 A changelog can be found in [changelog.md](changelog.md).
