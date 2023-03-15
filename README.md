@@ -3,7 +3,7 @@
 Set of tools to integrate Kubernetes tools into Maven builds.
 
 ## Status
-![Build status](https://drone.cloudtrain.aws.msgoat.eu/api/badges/msgoat/cnj-k8s-tools/status.svg)
+![Build status](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiUnZ3K1BzYUVjWXd0MlErTFUvcWRxMlNqR1IvanBqeFBWMDZDT0h3cFVPNjg0VTR5UEVkNXo4Zmk5QVg1MGpaN2xFVW4yQUxXeVRLNURHMWhKUlBKSVlrPSIsIml2UGFyYW1ldGVyU3BlYyI6Inp3WC9HbkFIdHlnc0ZSRDYiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main)
 
 ## Release information
 

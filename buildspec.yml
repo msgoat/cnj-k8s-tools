@@ -9,11 +9,11 @@ phases:
   install:
     on-failure: ABORT
     commands:
-      - echo "Install helm"
-      - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-      - chmod 700 get_helm.sh
-      - ./get_helm.sh
-      - helm version
+      - echo "Running phase install"
+      - echo "Download and run common installation script"
+      - aws s3 cp s3://s3-eu-west-1-cloudtrain-codebuild-shared/cloudtrain-codebuild-install.sh ~/
+      - chmod u+x ~/cloudtrain-codebuild-install.sh
+      - ~/cloudtrain-codebuild-install.sh
   pre_build:
     on-failure: ABORT
     commands:
@@ -22,9 +22,9 @@ phases:
       - aws s3 cp s3://s3-eu-west-1-cloudtrain-codebuild-shared/.mvn/settings.xml /root/.m2/settings.xml
       - echo "Authenticate on DockerHub"
       - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PAT
-      - echo "Authenticate on EKS"
-      - aws eks update-kubeconfig --name $CLOUDTRAIN_EKS_CLUSTER_NAME --role $CLOUDTRAIN_EKS_ROLE_ARN
-      - kubectl cluster-info
+#      - echo "Authenticate on EKS"
+#      - aws eks update-kubeconfig --name $CLOUDTRAIN_EKS_CLUSTER_NAME --role $CLOUDTRAIN_EKS_ROLE_ARN
+#      - kubectl cluster-info
   build:
     on-failure: ABORT
     commands:

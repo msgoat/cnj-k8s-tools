@@ -11,7 +11,11 @@
         <!-- <module>helm-maven-plugin-test</module> -->
     </modules>
     <properties>
-        <!-- make sure everyone is using Java 8 -->
+        <!-- new Maven version management -->
+        <revision>4.0.0</revision>
+        <sha1></sha1>
+        <changelist></changelist>
+        <!-- make sure everyone is using Java 11 -->
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -19,10 +23,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- common logging dependencies -->
-        <slf4j.version>1.7.30</slf4j.version>
-        <log4j.version>2.13.3</log4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
+        <log4j.version>2.17.1</log4j.version>
         <!-- common test dependencies -->
-        <junit.version>5.6.0</junit.version>
+        <junit.version>5.9.2</junit.version>
         <backend.test.version>3.0.0</backend.test.version>
         <!-- pinning versions of common maven plugins -->
         <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
@@ -40,19 +44,15 @@
         <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
         <!-- pinning versions of application type specific maven plugins -->
         <!-- pinning versions of cloud native specific maven plugins -->
-        <maven.compose.plugin.version>2.0.0</maven.compose.plugin.version>
+        <maven.compose.plugin.version>3.0.0</maven.compose.plugin.version>
         <maven.docker.plugin.version>0.37.0</maven.docker.plugin.version>
-        <!-- new Maven version management -->
-        <revision>4.0.0</revision>
-        <sha1></sha1>
-        <changelist></changelist>
     </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.13.1</version>
+                <version>4.13.2</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
