@@ -10,7 +10,7 @@ import java.util.List;
  */
 public final class ListCommandResult {
 
-    private List<Release> releases = new ArrayList<>();
+    private final List<Release> releases = new ArrayList<>();
 
     public ListCommandResult(List<Release> releases) {
         this.releases.addAll(releases);

@@ -18,23 +18,32 @@ import java.util.Map;
 @Mojo(name = "deploy", requiresProject = true)
 public final class DeployReleaseMojo extends AbstractHelmReleaseMojo {
 
-    @Parameter(property = "helm.chartDirectory", required = true, readonly = true)
-    protected File chartDirectory;
+    @Parameter(property = "helm.chartDirectory", required = false)
+    private File chartDirectory;
 
-    @Parameter(property = "helm.force", required = false, readonly = true, defaultValue = "false")
-    protected boolean force;
+    @Parameter(property = "helm.chartPackageDirectory", required = false)
+    private File chartPackageDirectory;
 
-    @Parameter(property = "helm.cleanupOnFail", required = false, readonly = true, defaultValue = "true")
-    protected boolean cleanupOnFail;
+    @Parameter(property = "helm.chartPackage", required = false)
+    private File chartPackage;
+
+    @Parameter(property = "helm.force", required = false, defaultValue = "false")
+    private boolean force;
+
+    @Parameter(property = "helm.cleanupOnFail", required = false, defaultValue = "true")
+    private boolean cleanupOnFail;
 
     @Parameter(property = "helm.resetValues", required = false, defaultValue = "false")
-    protected boolean resetValues;
+    private boolean resetValues;
 
     @Parameter(property = "helm.reuseValues", required = false, defaultValue = "false")
-    protected boolean reuseValues;
+    private boolean reuseValues;
 
     @Parameter(property = "helm.values", required = false)
-    protected Map<String,String> values = new LinkedHashMap<>();
+    private final Map<String, String> values = new LinkedHashMap<>();
+
+    @Parameter(property = "helm.dryRun", required = false, defaultValue = "false")
+    private boolean dryRun;
 
     /**
      * @see org.apache.maven.plugin.Mojo#execute()
@@ -43,12 +52,15 @@ public final class DeployReleaseMojo extends AbstractHelmReleaseMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         UpgradeCommand upgrade = new UpgradeCommand(new Slf4jMavenLogAdapter(getLog()));
         upgrade.setChartDirectory(chartDirectory);
+        upgrade.setChartPackageDirectory(chartPackageDirectory);
+        upgrade.setChartPackage(chartPackage);
         upgrade.setReleaseName(releaseName);
         upgrade.setAtomic(true);
         upgrade.setWait(true);
         upgrade.setInstall(true);
         upgrade.setCleanupOnFail(this.cleanupOnFail);
         upgrade.setForce(this.force);
+        upgrade.setDryRun(dryRun);
         if (this.debug) {
             upgrade.setDebug(true);
         }

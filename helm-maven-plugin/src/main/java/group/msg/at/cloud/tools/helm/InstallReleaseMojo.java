@@ -16,8 +16,8 @@ import java.io.File;
 @Mojo(name = "install", requiresProject = true)
 public final class InstallReleaseMojo extends AbstractHelmReleaseMojo {
 
-    @Parameter(property = "helm.chartDirectory", required = true, readonly = true)
-    protected File chartDirectory;
+    @Parameter(property = "helm.chartDirectory", required = true)
+    private File chartDirectory;
 
     /**
      * @see org.apache.maven.plugin.Mojo#execute()

@@ -7,7 +7,7 @@ import java.util.Objects;
  */
 public final class Release {
 
-    private String name;
+    private final String name;
 
     public Release(String name) {
         this.name = name;

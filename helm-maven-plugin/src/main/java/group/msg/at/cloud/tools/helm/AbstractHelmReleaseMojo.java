@@ -4,12 +4,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 public abstract class AbstractHelmReleaseMojo extends AbstractHelmMojo {
 
-    @Parameter(property = "helm.releaseName", readonly = true, required = true)
+    @Parameter(property = "helm.releaseName", required = true)
     protected String releaseName;
 
-    @Parameter(property = "helm.namespace", required = true, readonly = true)
+    @Parameter(property = "helm.namespace", required = true)
     protected String namespace;
 
-    @Parameter(property = "helm.timeout", required = false, readonly = true)
+    @Parameter(property = "helm.timeout", required = false)
     protected String timeout;
 }

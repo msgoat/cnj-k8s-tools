@@ -15,7 +15,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 public final class UpdateChartDependenciesMojo extends AbstractHelmChartMojo {
 
     @Parameter(property = "helm.namespace", required = false, readonly = true)
-    protected String namespace;
+    private String namespace;
 
     /**
      * @see org.apache.maven.plugin.Mojo#execute()

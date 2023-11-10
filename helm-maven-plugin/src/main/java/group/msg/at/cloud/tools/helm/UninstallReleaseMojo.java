@@ -5,9 +5,6 @@ import group.msg.at.cloud.tools.helm.core.command.UninstallCommandResult;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-
-import java.io.File;
 
 /**
  * {@code Mojo} that deletes the specified release.

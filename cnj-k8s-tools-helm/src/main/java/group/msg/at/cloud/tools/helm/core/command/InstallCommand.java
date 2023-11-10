@@ -92,7 +92,7 @@ public final class InstallCommand extends AbstractChartCommand<InstallCommandRes
         this.replace = replace;
     }
 
-    protected void collectCommandLineValues(List<String> arguments) {
+    private void collectCommandLineValues(List<String> arguments) {
 /*
         StringBuilder regularValuesBuilder = new StringBuilder();
         StringBuilder stringValuesBuilder = new StringBuilder();
@@ -141,7 +141,7 @@ public final class InstallCommand extends AbstractChartCommand<InstallCommandRes
     private static final class ResultParser implements Consumer<String> {
 
         private CommandStatusCode statusCode;
-        private List<String> statusMessageParts = new ArrayList<>();
+        private final List<String> statusMessageParts = new ArrayList<>();
 
         public InstallCommandResult parse() {
             InstallCommandResult result = new InstallCommandResult();

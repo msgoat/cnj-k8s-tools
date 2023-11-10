@@ -3,10 +3,8 @@ package group.msg.at.cloud.tools.helm.core.command;
 import group.msg.at.cloud.tools.helm.core.ExecutableRunner;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -15,6 +13,7 @@ import java.util.stream.Collectors;
  */
 public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandResult> {
 
+    private static final Set<String> SENSITIVE_ARGUMENT_NAMES = Set.of("--set", "--set-json", "--set-literal", "--set-string", "--password");
     private boolean force;
     private boolean install;
     private boolean cleanupOnFail;
@@ -108,22 +107,23 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
         this.values = values;
     }
 
-    protected void collectCommandLineValues(List<String> arguments) {
-/*
-        StringBuilder regularValuesBuilder = new StringBuilder();
-        StringBuilder stringValuesBuilder = new StringBuilder();
-        boolean first = true;
-        for (Map.Entry<String, Object> current : values.entrySet()) {
-            if (!first) {
-
-            }
+    public String getChartLocation() {
+        String result;
+        if (getChartRepoUrl().isPresent()) {
+            result = getChartRepoUrl().toString();
+        } else if (getChartPackage() != null) {
+            result = getChartPackage().getAbsolutePath();
+        } else if (getChartDirectory() != null) {
+            result = getChartDirectory().getAbsolutePath();
+        } else {
+            throw new IllegalStateException("Expected at least one chart location parameter to be set, but got none!");
         }
- */
+        return result;
     }
 
     protected void collectCommandLineArguments(List<String> arguments) {
         arguments.add(getReleaseName());
-        arguments.add(getChartDirectory().getAbsolutePath());
+        arguments.add(getChartLocation());
         super.collectCommandLineArguments(arguments);
         if (isForce()) {
             arguments.add("--force");
@@ -155,9 +155,8 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
         List<String> arguments = new ArrayList<>();
         arguments.add("helm");
         arguments.add("upgrade");
-        // TODO: put after collectCommandLineArguments when filter of set argument is implemented
-        this.logger.info("running command: " + String.join(" ", arguments));
         collectCommandLineArguments(arguments);
+        this.logger.info("running command: " + String.join(" ", filterSensitiveArguments(arguments)));
         runner.run(getCurrentDirectory(), compositeConsumer, arguments.toArray(new String[0]));
         return parsingConsumer.parse();
     }
@@ -165,7 +164,7 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
     private static final class ResultParser implements Consumer<String> {
 
         private CommandStatusCode statusCode;
-        private List<String> statusMessageParts = new ArrayList<>();
+        private final List<String> statusMessageParts = new ArrayList<>();
 
         public UpgradeCommandResult parse() {
             UpgradeCommandResult result = new UpgradeCommandResult();
@@ -195,5 +194,19 @@ public final class UpgradeCommand extends AbstractChartCommand<UpgradeCommandRes
                 }
             }
         }
+    }
+
+    private List<String> filterSensitiveArguments(List<String> arguments) {
+        List<String> result = new ArrayList<>();
+        Iterator<String> argItr = arguments.iterator();
+        while (argItr.hasNext()) {
+            String currentArg = argItr.next();
+            result.add(currentArg);
+            if (SENSITIVE_ARGUMENT_NAMES.contains(currentArg) && argItr.hasNext()) {
+                String nextArg = argItr.next();
+                result.add("__redacted(" + nextArg.length() + ")__");
+            }
+        }
+        return result;
     }
 }

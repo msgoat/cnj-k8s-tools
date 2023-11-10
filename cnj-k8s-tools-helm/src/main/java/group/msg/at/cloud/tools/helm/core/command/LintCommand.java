@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Represents the {@code helm dependency update} command which updates all dependencies of the specified chart.
+ * Represents the {@code helm install} command which installs the specified chart as a release.
  */
-public final class UpdateDependenciesCommand extends AbstractChartCommand<UpdateDependenciesCommandResult> {
+public final class LintCommand extends AbstractChartCommand<LintCommandResult> {
 
-    public UpdateDependenciesCommand() {
+    public LintCommand() {
         super();
     }
 
-    public UpdateDependenciesCommand(Logger logger) {
+    public LintCommand(Logger logger) {
         super(logger);
     }
 
@@ -26,15 +26,14 @@ public final class UpdateDependenciesCommand extends AbstractChartCommand<Update
     }
 
     @Override
-    public UpdateDependenciesCommandResult internalCall() throws Exception {
+    public LintCommandResult internalCall() throws Exception {
         ExecutableRunner runner = new ExecutableRunner();
         Consumer<String> loggingConsumer = s -> this.logger.info(s);
         ResultParser parsingConsumer = new ResultParser();
         Consumer<String> compositeConsumer = loggingConsumer.andThen(parsingConsumer);
         List<String> arguments = new ArrayList<>();
         arguments.add("helm");
-        arguments.add("dependency");
-        arguments.add("update");
+        arguments.add("lint");
         collectCommandLineArguments(arguments);
         this.logger.info("running command: " + String.join(" ", arguments));
         runner.run(getCurrentDirectory(), compositeConsumer, arguments.toArray(new String[0]));
@@ -46,8 +45,8 @@ public final class UpdateDependenciesCommand extends AbstractChartCommand<Update
         private CommandStatusCode statusCode;
         private final List<String> statusMessageParts = new ArrayList<>();
 
-        public UpdateDependenciesCommandResult parse() {
-            UpdateDependenciesCommandResult result = new UpdateDependenciesCommandResult();
+        public LintCommandResult parse() {
+            LintCommandResult result = new LintCommandResult();
             result.setStatusCode(statusCode);
             result.setStatusMessage(String.join(" ", statusMessageParts));
             return result;
@@ -55,14 +54,13 @@ public final class UpdateDependenciesCommand extends AbstractChartCommand<Update
 
         @Override
         public void accept(String s) {
-            if (s != null) {
-                if (s.startsWith("Update Complete")) {
+            if (s != null && s.contains("chart(s) failed")) {
+                if (s.endsWith("0 chart(s) failed")) {
                     statusCode = CommandStatusCode.SUCCESS;
-                    statusMessageParts.add(s);
-                } else if (s.startsWith("Error:")) {
+                } else {
                     statusCode = CommandStatusCode.FAILURE;
-                    statusMessageParts.add(s);
                 }
+                statusMessageParts.add(s);
             }
         }
     }

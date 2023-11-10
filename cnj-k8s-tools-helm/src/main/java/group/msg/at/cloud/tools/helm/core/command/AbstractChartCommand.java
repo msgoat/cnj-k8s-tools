@@ -3,8 +3,10 @@ package group.msg.at.cloud.tools.helm.core.command;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Abstract base class of all {@code Helm} commands that require a {@code Chart} directory.
@@ -14,6 +16,8 @@ import java.util.*;
 public abstract class AbstractChartCommand<V> extends AbstractCommand<V> {
 
     private File chartDirectory;
+    private File chartPackage;
+    private File chartPackageDirectory;
     private boolean atomic;
     private boolean depUp;
     private boolean devel;
@@ -207,6 +211,36 @@ public abstract class AbstractChartCommand<V> extends AbstractCommand<V> {
 
     public void setChartVersion(String chartVersion) {
         this.chartVersion = chartVersion;
+    }
+
+    /**
+     * Returns {@code File} representing a packaged Helm chart.
+     * @return given or derived package file
+     */
+    public File getChartPackage() {
+        if (chartPackage == null) {
+            if (chartPackageDirectory == null) {
+                throw new IllegalStateException("Expected either charPackage or chartPackageDirectory to be set, but got none!");
+            }
+            File[] packages = chartPackageDirectory.listFiles((f,n) -> n.endsWith(".tgz"));
+            if (packages.length != 1) {
+                throw new IllegalStateException(String.format("Expected one helm package file in [%s] but got [%d]", chartPackageDirectory, packages.length));
+            }
+            chartPackage = packages[0];
+        }
+        return chartPackage;
+    }
+
+    public void setChartPackage(File chartPackage) {
+        this.chartPackage = chartPackage;
+    }
+
+    public void setChartPackageDirectory(File chartPackageDirectory) {
+        this.chartPackageDirectory = chartPackageDirectory;
+    }
+
+    public File getChartPackageDirectory() {
+        return chartPackageDirectory;
     }
 
     @Override

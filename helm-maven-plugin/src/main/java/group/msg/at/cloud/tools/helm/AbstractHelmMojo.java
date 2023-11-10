@@ -4,6 +4,7 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.settings.Settings;
 
 import java.io.File;
 
@@ -11,7 +12,7 @@ import java.io.File;
  * Common base implementation of all Mojos running Helm.
  *
  * @author theism
- * @version 1.0
+ * @version 1.1
  * @since 15.02.2019
  */
 public abstract class AbstractHelmMojo extends AbstractMojo {
@@ -25,7 +26,10 @@ public abstract class AbstractHelmMojo extends AbstractMojo {
     @Parameter(defaultValue = "${session}", required = true, readonly = true)
     protected MavenSession session;
 
-    @Parameter(property = "helm.debug", defaultValue = "false", readonly = true, required = false)
+    @Parameter(defaultValue = "${settings}", readonly = true, required = true)
+    protected Settings settings;
+
+    @Parameter(property = "helm.debug", defaultValue = "false", required = false)
     protected boolean debug;
 
     protected void info(String msg) {

@@ -63,14 +63,14 @@ public final class UninstallCommand extends AbstractCommand<UninstallCommandResu
     /**
      * Optional duration in seconds helm will wait for any individual Kubernetes operation (like Jobs for hooks) (default: 300)
      */
-    public final Optional<Integer> getTimeout() {
+    public Optional<Integer> getTimeout() {
         return timeout != 0 ? Optional.of(this.timeout) : Optional.empty();
     }
 
     /**
      * Sets the duration in seconds Helm will wait to establish a connection to tiller.
      */
-    public final void setTimeout(int timeout) {
+    public void setTimeout(int timeout) {
         this.timeout = timeout;
     }
 

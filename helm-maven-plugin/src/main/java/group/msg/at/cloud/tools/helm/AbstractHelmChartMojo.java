@@ -6,6 +6,6 @@ import java.io.File;
 
 public abstract class AbstractHelmChartMojo extends AbstractHelmMojo {
 
-    @Parameter(property = "helm.chartDirectory", required = true, readonly = true)
+    @Parameter(property = "helm.chartDirectory", required = true)
     protected File chartDirectory;
 }
