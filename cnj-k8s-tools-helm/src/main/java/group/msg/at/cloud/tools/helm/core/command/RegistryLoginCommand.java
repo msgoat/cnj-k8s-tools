@@ -4,13 +4,17 @@ import group.msg.at.cloud.tools.helm.core.ExecutableRunner;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
  * Represents the {@code helm package} command which installs the specified chart as a release.
  */
 public final class RegistryLoginCommand extends AbstractCommand<RegistryLoginCommandResult> {
+
+    private static final Set<String> SENSITIVE_ARGUMENT_NAMES = Set.of("--password");
 
     private String chartRegistry;
 
@@ -51,8 +55,8 @@ public final class RegistryLoginCommand extends AbstractCommand<RegistryLoginCom
     }
 
     protected void collectCommandLineArguments(List<String> arguments) {
+        arguments.add(chartRegistry);
         super.collectCommandLineArguments(arguments);
-        arguments.add("login");
         arguments.add("--username");
         arguments.add(getUsername());
         arguments.add("--password");
@@ -68,8 +72,9 @@ public final class RegistryLoginCommand extends AbstractCommand<RegistryLoginCom
         List<String> arguments = new ArrayList<>();
         arguments.add("helm");
         arguments.add("registry");
+        arguments.add("login");
         collectCommandLineArguments(arguments);
-        this.logger.info("running command: helm registry login");
+        this.logger.info("running command: " + String.join(" ", filterSensitiveArguments(arguments)));
         runner.run(getCurrentDirectory(), compositeConsumer, arguments.toArray(new String[0]));
         return parsingConsumer.parse();
     }
@@ -96,5 +101,18 @@ public final class RegistryLoginCommand extends AbstractCommand<RegistryLoginCom
                 }
             }
         }
+    }
+    private List<String> filterSensitiveArguments(List<String> arguments) {
+        List<String> result = new ArrayList<>();
+        Iterator<String> argItr = arguments.iterator();
+        while (argItr.hasNext()) {
+            String currentArg = argItr.next();
+            result.add(currentArg);
+            if (SENSITIVE_ARGUMENT_NAMES.contains(currentArg) && argItr.hasNext()) {
+                String nextArg = argItr.next();
+                result.add("__redacted(" + nextArg.length() + ")__");
+            }
+        }
+        return result;
     }
 }

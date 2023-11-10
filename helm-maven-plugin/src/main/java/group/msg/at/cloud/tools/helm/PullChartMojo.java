@@ -35,6 +35,7 @@ public final class PullChartMojo extends AbstractHelmMojo {
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        ensureLoginToRegistry();
         PullCommand command = new PullCommand(new Slf4jMavenLogAdapter(getLog()));
         command.setChartRegistry(chartRegistry);
         command.setChartRepository(chartRepository);
@@ -54,7 +55,7 @@ public final class PullChartMojo extends AbstractHelmMojo {
         }
     }
 
-    private void loginToRegistry() throws MojoExecutionException {
+    private void ensureLoginToRegistry() throws MojoExecutionException {
         Server chartRegistrySettings = settings.getServer(chartRegistry);
         Slf4jMavenLogAdapter logAdapter = new Slf4jMavenLogAdapter(getLog());
         if (chartRegistrySettings != null) {
