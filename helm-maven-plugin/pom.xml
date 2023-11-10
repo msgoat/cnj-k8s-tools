@@ -10,7 +10,7 @@
     <packaging>maven-plugin</packaging>
     <properties>
         <maven.plugin.plugin.version>3.6.1</maven.plugin.plugin.version>
-        <maven.runtime.version>3.6.1</maven.runtime.version>
+        <maven.runtime.version>3.8.1</maven.runtime.version>
     </properties>
     <dependencyManagement>
         <dependencies>
